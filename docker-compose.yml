@@ -1,0 +1,36 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - '80:80'
+    links:
+      - fpm
+    volumes:
+      - ./:/var/www/laravel:cached
+      - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/laravel.conf
+
+  fpm:
+    build: ./docker/php-fpm
+    ports:
+      - '9000:9000'
+    links:
+      - db
+    volumes:
+      - ./:/var/www/laravel:cached
+    working_dir: /var/www/laravel
+
+  db:
+    image: mysql:5.7
+    ports:
+      - '3360:3360'
+    volumes:
+      - data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: time3483
+
+volumes:
+  data: ~
