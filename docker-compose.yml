@@ -7,17 +7,15 @@ services:
     links:
       - fpm
     volumes:
-      - ./:/var/www/laravel:cached
+      - ./src:/var/www/laravel:cached
       - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/laravel.conf
 
   fpm:
     build: ./docker/php-fpm
-    ports:
-      - '9000:9000'
     links:
       - db
     volumes:
-      - ./:/var/www/laravel:cached
+      - ./src:/var/www/laravel:cached
     working_dir: /var/www/laravel
 
   db:
